@@ -1,0 +1,6 @@
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_name VARCHAR(255);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_floor VARCHAR(50);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_room VARCHAR(50);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_address VARCHAR(255);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_latitude DECIMAL(9,6);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_longitude DECIMAL(9,6);

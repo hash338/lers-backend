@@ -1,0 +1,47 @@
+-- Hospitals
+CREATE TABLE hospitals (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    region VARCHAR(100) NOT NULL,
+    phone VARCHAR(50),
+    address VARCHAR(255),
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    type VARCHAR(50) NOT NULL DEFAULT 'GENERAL',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Floors
+CREATE TABLE floors (
+    id BIGSERIAL PRIMARY KEY,
+    floor_number INT NOT NULL,
+    hospital_id BIGINT NOT NULL REFERENCES hospitals(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Rooms
+CREATE TABLE rooms (
+    id BIGSERIAL PRIMARY KEY,
+    room_number VARCHAR(20) NOT NULL,
+    type VARCHAR(50) NOT NULL DEFAULT 'REGULAR',
+    status VARCHAR(20) NOT NULL DEFAULT 'AVAILABLE',
+    floor_id BIGINT NOT NULL REFERENCES floors(id) ON DELETE CASCADE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Room Bookings
+CREATE TABLE room_bookings (
+    id BIGSERIAL PRIMARY KEY,
+    room_id BIGINT NOT NULL REFERENCES rooms(id),
+    citizen_id UUID REFERENCES users(id),
+    incident_id UUID REFERENCES incidents(id),
+    booked_by VARCHAR(20) NOT NULL DEFAULT 'CITIZEN',
+    status VARCHAR(20) NOT NULL DEFAULT 'PENDING',
+    notes TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS patient_condition VARCHAR(20);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS hospital_id BIGINT REFERENCES hospitals(id);
+ALTER TABLE incidents ADD COLUMN IF NOT EXISTS room_id BIGINT REFERENCES rooms(id);
