@@ -101,13 +101,4 @@ public class AuthController {
                         .encode(password)
         );
     }
-
-    @GetMapping("/reset-admin")
-    public ResponseEntity<String> resetAdmin() {
-        userRepository.findByEmail("admin@lers.lb").ifPresent(user -> {
-            user.setPassword(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder().encode("lers2024"));
-            userRepository.save(user);
-        });
-        return ResponseEntity.ok("Done!");
-    }
 }
